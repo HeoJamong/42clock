@@ -12,7 +12,7 @@ function App() {
   // 출근 버튼 클릭 시 서버로 전송
   const handleClockIn = async () => {
     try {
-      const response = await fetch("http://34.64.186.69:8080/in", {
+      const response = await fetch("http://34.64.189.149:8080/in", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -33,7 +33,7 @@ function App() {
   // 퇴근 버튼 클릭 시 서버로 전송
   const handleClockOut = async () => {
     try {
-      const response = await fetch("http://34.64.186.69:8080/out", {
+      const response = await fetch("http://34.64.189.149:8080/out", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -54,7 +54,7 @@ function App() {
   // 누적 시간 버튼 클릭 시 서버로부터 데이터 가져오기
   const handleTotalTime = async () => {
     try {
-      const response = await fetch("http://34.64.186.69:8080/sum", {
+      const response = await fetch("http://34.64.189.149:8080/sum", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -85,7 +85,7 @@ function App() {
   // 인트라 시간 확인 버튼 클릭 시 서버로 요청
   const handleIntraTime = async () => {
     try {
-      const response = await fetch("http://34.64.186.69:8080/intra", {
+      const response = await fetch("http://34.64.189.149:8080/intra", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -123,6 +123,9 @@ function App() {
     return hours + minutesToHours; // 소수점으로 시간 변환
   };
 
+  // 누적 시간의 퍼센테이지 계산
+  const percentage = (accumulatedHours / maxHours) * 100;
+
   return (
     <div className="App">
       <div className="container">
@@ -148,11 +151,10 @@ function App() {
 
         <div className="progress-container">
           <CircularProgressbar
-            value={accumulatedHours}
-            maxValue={maxHours}
-            text={`${accumulatedHours.toFixed(2)}h`}
+            value={percentage} // 퍼센테이지로 표시
+            text={`${percentage.toFixed(2)}%`} // 퍼센테이지 텍스트 표시
             styles={buildStyles({
-              pathColor: `rgba(62, 152, 199, ${accumulatedHours / maxHours})`,
+              pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
               textColor: "#f88",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
