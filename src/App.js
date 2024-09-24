@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./App.css";
+import { ChakraProvider, Box } from "@chakra-ui/react";
 
 function App() {
   const [nickname, setNickname] = useState("");
