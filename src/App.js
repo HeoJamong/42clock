@@ -149,18 +149,19 @@ function App() {
             퇴근
           </button>
         </div>
-
-        <div className="progress-container">
-          <CircularProgressbar
-            value={percentage} // 퍼센테이지로 표시
-            text={`${percentage.toFixed(2)}%`} // 퍼센테이지 텍스트 표시
-            styles={buildStyles({
-              pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
-              textColor: "#f88",
-              trailColor: "#d6d6d6",
-              backgroundColor: "#3e98c7",
-            })}
-          />
+        <div className="circle-wrap">
+          <div className="progress-container">
+            <CircularProgressbar
+              value={percentage} // 퍼센테이지로 표시
+              text={`${percentage.toFixed(2)}%`} // 퍼센테이지 텍스트 표시
+              styles={buildStyles({
+                pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
+                textColor: "#f88",
+                trailColor: "#d6d6d6",
+                backgroundColor: "#3e98c7",
+              })}
+            />
+          </div>
         </div>
 
         <div className="button-group">
