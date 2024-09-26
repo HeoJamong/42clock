@@ -107,9 +107,11 @@ function App() {
         console.log("인트라 시간 데이터:", data);
 
         // 받은 데이터를 alert로 표시
-        if (data && data.time) {
-          const { hours, minutes, seconds } = data.time;
-          alert(`인트라 시간: ${hours}시간 ${minutes}분 ${seconds}초`);
+        if (data && data.intra_time) {
+          var my_intra_time = data.intra_time.split(":");
+          alert(
+            `인트라 시간: ${my_intra_time[0]}시간 ${my_intra_time[1]}분 ${my_intra_time[2]}초`
+          );
         } else {
           alert("인트라 시간 데이터를 불러오지 못했습니다.");
         }
@@ -142,6 +144,33 @@ function App() {
       }
     } catch (error) {
       console.error("누적 시간 수정 요청 중 오류 발생:", error);
+    }
+    try {
+      const response = await fetch("http://34.64.189.149:8080/sum", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `id=${nickname}`, // FormData 형식으로 id 전송
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("누적 시간 데이터:", data);
+
+        // 받은 시간을 누적 시간과 형식에 맞게 처리
+        if (data && data.sumtime) {
+          const timeString = data.sumtime;
+          setAccumulatedTime(formatAccumulatedTime(timeString));
+          setAccumulatedHours(convertToHours(timeString)); // 시간을 시간 단위로 변환
+        } else {
+          console.log("누적 시간 데이터가 잘못되었습니다.");
+        }
+      } else {
+        console.log("누적 시간 가져오기 실패");
+      }
+    } catch (error) {
+      console.error("누적 시간 요청 중 오류 발생:", error);
     }
   };
 
