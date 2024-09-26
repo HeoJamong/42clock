@@ -14,7 +14,7 @@ html {
 /* 컨테이너 스타일 */
 .container {
   width: 100%;
-  max-width: 375px;
+  max-width: 350px;
   margin: 0 auto;
   padding: 15px;
   background-color: white;
