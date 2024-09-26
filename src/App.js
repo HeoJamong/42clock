@@ -145,33 +145,6 @@ function App() {
     } catch (error) {
       console.error("누적 시간 수정 요청 중 오류 발생:", error);
     }
-    try {
-      const response = await fetch("http://34.64.189.149:8080/sum", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `id=${nickname}`, // FormData 형식으로 id 전송
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("누적 시간 데이터:", data);
-
-        // 받은 시간을 누적 시간과 형식에 맞게 처리
-        if (data && data.sumtime) {
-          const timeString = data.sumtime;
-          setAccumulatedTime(formatAccumulatedTime(timeString));
-          setAccumulatedHours(convertToHours(timeString)); // 시간을 시간 단위로 변환
-        } else {
-          console.log("누적 시간 데이터가 잘못되었습니다.");
-        }
-      } else {
-        console.log("누적 시간 가져오기 실패");
-      }
-    } catch (error) {
-      console.error("누적 시간 요청 중 오류 발생:", error);
-    }
   };
 
   // 서버에서 받은 시간을 보기 좋은 형식으로 변환
@@ -198,7 +171,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>42 time</h1>
+      <h1>42 Clock</h1>
 
       {/* 닉네임 입력 필드 */}
       <input
@@ -209,12 +182,25 @@ function App() {
         className="input"
       />
 
-      <button onClick={handleClockIn} className="button">
-        출근
-      </button>
-      <button onClick={handleClockOut} className="button button-danger">
-        퇴근
-      </button>
+      {/* 출근, 퇴근 버튼 그룹 */}
+      <div className="button-group">
+        <button onClick={handleClockIn} className="button">
+          출근
+        </button>
+        <button onClick={handleClockOut} className="button button-danger">
+          퇴근
+        </button>
+      </div>
+
+      {/* 누적시간, 인트라 시간 확인 버튼 그룹 */}
+      <div className="button-group">
+        <button onClick={handleTotalTime} className="button button-total">
+          누적시간
+        </button>
+        <button onClick={handleIntraTime} className="button button-intra">
+          인트라 시간 확인
+        </button>
+      </div>
 
       {/* 수정 버튼 */}
       <button onClick={toggleEdit} className="button button-update">
@@ -264,15 +250,6 @@ function App() {
           />
         </div>
       </div>
-
-      <button onClick={handleTotalTime} className="button button-total">
-        누적시간
-      </button>
-
-      {/* 인트라 시간 확인 버튼 */}
-      <button onClick={handleIntraTime} className="button button-intra">
-        인트라 시간 확인
-      </button>
 
       <p>{accumulatedTime}</p>
     </div>
