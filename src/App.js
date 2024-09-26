@@ -30,11 +30,14 @@ function App() {
       });
 
       if (response.ok) {
+        alert(`${nickname}님 출근 완료`);
         console.log(`${nickname}님 출근 완료`);
       } else {
+        alert("에러");
         console.log("출근 시간 전송 실패");
       }
     } catch (error) {
+      alert("에러");
       console.error("출근 요청 중 오류 발생:", error);
     }
   };
@@ -51,11 +54,41 @@ function App() {
       });
 
       if (response.ok) {
+        alert(`${nickname}님 퇴근 완료`);
         console.log(`${nickname}님 퇴근 완료`);
+        try {
+          const response = await fetch("http://34.64.189.149:8080/sum", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `id=${nickname}`, // FormData 형식으로 id 전송
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log("누적 시간 데이터:", data);
+
+            // 받은 시간을 누적 시간과 형식에 맞게 처리
+            if (data && data.sumtime) {
+              const timeString = data.sumtime;
+              setAccumulatedTime(formatAccumulatedTime(timeString));
+              setAccumulatedHours(convertToHours(timeString)); // 시간을 시간 단위로 변환
+            } else {
+              console.log("누적 시간 데이터가 잘못되었습니다.");
+            }
+          } else {
+            console.log("누적 시간 가져오기 실패");
+          }
+        } catch (error) {
+          console.error("누적 시간 요청 중 오류 발생:", error);
+        }
       } else {
+        alert("에러");
         console.log("퇴근 시간 전송 실패");
       }
     } catch (error) {
+      alert("에러");
       console.error("퇴근 요청 중 오류 발생:", error);
     }
   };
